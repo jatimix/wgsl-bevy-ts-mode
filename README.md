@@ -8,7 +8,7 @@ providing syntax highlighting, indenting and navigation.
 # Installation
 
 In order to use this mode, you must arrange that the [tree-sitter-bevy-wgsl grammar]
-(https://github.com/jatimix/tree-sitter-bevy-wgsl/tree/master) is available.
+(https://github.com/jatimix/tree-sitter-wgsl-bevy) is available.
 
 ## Installing tree-sitter for emacs
 
