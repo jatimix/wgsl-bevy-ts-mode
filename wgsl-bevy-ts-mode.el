@@ -47,7 +47,7 @@
   "WGSL keywords for tree-sitter font-locking.")
 
 (defvar wgsl-bevy-ts-mode--preprocessors
-  '("#ifdef" "#ifndef" "#else" "#if" "#endif" "#import" "#define_import_path")
+  '("#ifdef" "#ifndef" "#else" "#if" "#endif" "#import" "#define_import_path" "#define")
   "WGSL preprocessor keywords for tree-sitter font-locking.")
 
 (defvar wgsl-bevy-ts-mode--builtins
@@ -169,7 +169,7 @@
     :feature builtin
     ;; (([,@wgsl-ts-mode--builtins]) @font-lock-builtin-face)
     (((identifier) @font-lock-builtin-face
-      (:pred wgsl_bevy-bevy-ts-mode--is-builtin? @font-lock-builtin-face)))
+      (:pred wgsl-bevy-ts-mode--is-builtin? @font-lock-builtin-face)))
 
     :language wgsl_bevy
     :override t
