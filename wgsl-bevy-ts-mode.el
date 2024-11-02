@@ -42,12 +42,12 @@
 
 (defvar wgsl-bevy-ts-mode--keywords
   '("if" "else" "fn" "switch" "case" "break" "default" "loop"
-    "continue" "continuing" "for" "let" "var" "return" "struct"
+    "continue" "continuing" "for" "let" "var" "return" "struct" "const"
     "type" "while")
   "WGSL keywords for tree-sitter font-locking.")
 
 (defvar wgsl-bevy-ts-mode--preprocessors
-  '("#ifdef" "#ifndef" "#else" "#if" "#endif" "#import")
+  '("#ifdef" "#ifndef" "#else" "#if" "#endif" "#import" "#define_import_path")
   "WGSL preprocessor keywords for tree-sitter font-locking.")
 
 (defvar wgsl-bevy-ts-mode--builtins
@@ -105,7 +105,7 @@
         (mapc (lambda (x) (puthash x t tbl)) wgsl-bevy-ts-mode--builtins)
         tbl))
 
-(defun wgsl_bevy-bevy-ts-mode--is-builtin? (x)
+(defun wgsl-bevy-ts-mode--is-builtin? (x)
   (gethash (treesit-node-text x) wgsl-bevy-ts-mode--builtins-hash-table))
 
 (defvar wgsl-bevy-ts-mode--font-lock-rules
@@ -239,10 +239,11 @@ PARENT is the parent of the current node."
      ((parent-is "source_file") column-0 0)
      ((node-is ")") parent-bol 0)
      ((node-is "]") parent-bol 0)
-     ((and (node-is "}") (parent-is "import_list")) column-0 0)
+     ((and (node-is "}") (parent-is "import_list")) (or great-grand-parent grand-parent) 0)
      ((node-is "}") (and parent parent-bol) 0)
      ((and (parent-is "comment") c-ts-common-looking-at-star)
       c-ts-common-comment-start-after-first-star -1)
+     ((parent-is "preproc") wgsl-bevy-ts-mode--standalone-parent-skip-preproc wgsl-bevy-ts-mode-indent-offset)
      ((parent-is "comment") prev-adaptive-prefix 0)
      ((parent-is "arguments") parent-bol wgsl-bevy-ts-mode-indent-offset)
      ((parent-is "assignment_statement") parent-bol wgsl-bevy-ts-mode-indent-offset)
